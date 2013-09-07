@@ -71,12 +71,14 @@ public class Player extends Actor implements ContactListener{
 		PolygonShape polyShape = new PolygonShape();
 		polyShape.setAsBox((width/2)*RustySpoons.WORLD_TO_BOX,  ((height - footHeight)/2)*RustySpoons.WORLD_TO_BOX, new Vector2(0, 54*RustySpoons.WORLD_TO_BOX), 0.f);
 		torso = body.createFixture(polyShape, 0.f);
+		torso.setUserData("Torso");
 		polyShape.dispose();
 		                                 
 		PolygonShape feetShape = new PolygonShape();
 		feetShape.setAsBox((width/2)*RustySpoons.WORLD_TO_BOX,  footHeight / 2 * RustySpoons.WORLD_TO_BOX, new Vector2(0, -10*RustySpoons.WORLD_TO_BOX) , 0.f);
 		feet = body.createFixture(feetShape, 0.f);
 		feet.setFriction(0.01f);
+		feet.setUserData("Feet");
 		torso.setFriction(0.01f);
 		feetShape.dispose();
 	}
@@ -162,6 +164,8 @@ public class Player extends Actor implements ContactListener{
 			batch.draw(anim[animIndex], x + width , y, direction * width, height);
 		else
 			batch.draw(anim[animIndex], x , y, direction * width, height);
+		
+		System.out.println(velocity + " " + body.getLinearVelocity() + " : (" + x + "," + y + ") " + body.getPosition());
 	}
 
 	@Override
@@ -169,14 +173,31 @@ public class Player extends Actor implements ContactListener{
 		// TODO Auto-generated method stub
 		if (contact.getFixtureA().equals(feet) || contact.getFixtureB().equals(feet))
 		{
-			canJump = true;
+			if (contact.getFixtureA().getUserData().equals("Floor") || contact.getFixtureB().getUserData().equals("Floor"))
+			{
+				canJump = true;
+			}
+			
+			
 		}
+		if (contact.getFixtureA().getUserData() != null)
+		{
+			System.out.println(contact.getFixtureA().getUserData());
+		}
+		if (contact.getFixtureB().getUserData() != null)
+		{
+			System.out.println(contact.getFixtureB().getUserData());
+		}
+		
 	}
 
 	@Override
 	public void endContact(Contact contact) {
 		// TODO Auto-generated method stub
-		
+		if (contact.getFixtureA().equals(feet) || contact.getFixtureB().equals(feet))
+		{
+			canJump = false;
+		}
 	}
 
 	@Override

@@ -20,6 +20,7 @@ public class LevelOne extends AbstractScreen {
 	protected Player player;
 	protected Floor floor;
 	protected Background bg;
+	protected RichGuy rich;
 	
 	protected World world;
 	private Box2DDebugRenderer debugRenderer;
@@ -33,16 +34,20 @@ public class LevelOne extends AbstractScreen {
 		camera = new OrthographicCamera(800*RustySpoons.WORLD_TO_BOX, 600*RustySpoons.WORLD_TO_BOX);
 		camera.translate(new Vector3(1,1,0));
 		world = new World(new Vector2(0, -30), true);
-		debugRenderer = new Box2DDebugRenderer();
+		//debugRenderer = new Box2DDebugRenderer();
 		
 		player = new Player(world);
+		rich = new RichGuy(650, 128, world);
 		
 		floor = new Floor(0, 100, 2000, 30, world);
 		
 		bg = new Background();
 		
 		stage.addActor(bg);
+		stage.addActor(rich);
+		
 		stage.addActor(player);
+		
 		stage.addActor(floor);
 		
 	}
@@ -60,7 +65,7 @@ public class LevelOne extends AbstractScreen {
 		{
 			//bg.scroll(-2);
 		}
-		
 		world.step(1/60f,  6,  2);
+		//debugRenderer.render(world,  camera.combined);
 	}
 }

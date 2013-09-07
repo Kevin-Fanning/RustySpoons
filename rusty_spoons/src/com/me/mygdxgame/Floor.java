@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -28,7 +29,8 @@ public class Floor extends Actor {
 		Body floorBody = world.createBody(boxDef);
 		PolygonShape polyShape = new PolygonShape();
 		polyShape.setAsBox((width/2.f)*RustySpoons.WORLD_TO_BOX,  (height/2.f)*RustySpoons.WORLD_TO_BOX);
-		floorBody.createFixture(polyShape, 0.f);
+		Fixture fix = floorBody.createFixture(polyShape, 0.f);
+		fix.setUserData("Floor");
 		polyShape.dispose();
 	}
 	
