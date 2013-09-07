@@ -35,9 +35,9 @@ public class Floor extends Actor {
 	@Override
 	public void draw(SpriteBatch batch, float parentAlpha)
 	{
-		shapeRenderer.begin(ShapeType.FilledRectangle);
-		shapeRenderer.setColor(Color.PINK);
-		shapeRenderer.filledRect(x, y, width, height);
-		shapeRenderer.end();
+		//shapeRenderer.begin(ShapeType.FilledRectangle);
+		//shapeRenderer.setColor(Color.PINK);
+		//shapeRenderer.filledRect(x, y, width, height);
+		//shapeRenderer.end();
 	}
 }

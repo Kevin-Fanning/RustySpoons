@@ -19,6 +19,7 @@ public class LevelOne extends AbstractScreen {
 	
 	protected Player player;
 	protected Floor floor;
+	protected Background bg;
 	
 	protected World world;
 	private Box2DDebugRenderer debugRenderer;
@@ -36,11 +37,14 @@ public class LevelOne extends AbstractScreen {
 		
 		player = new Player(world);
 		
-		floor = new Floor(100, 100, 2000, 30, world);
+		floor = new Floor(0, 100, 2000, 30, world);
 		
+		bg = new Background();
 		
+		stage.addActor(bg);
 		stage.addActor(player);
 		stage.addActor(floor);
+		
 	}
 	
 	@Override
@@ -48,7 +52,15 @@ public class LevelOne extends AbstractScreen {
 	{
 		super.render(delta);
 		
+		if (player.x > stage.getWidth()*0.8f && player.walking && !(player.velocity.x < 0))
+		{
+			bg.scroll(2);
+		}
+		if (player.x < stage.getWidth()*0.2f)
+		{
+			//bg.scroll(-2);
+		}
+		
 		world.step(1/60f,  6,  2);
-		debugRenderer.render(world,  camera.combined);
 	}
 }

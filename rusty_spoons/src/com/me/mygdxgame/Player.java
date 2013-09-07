@@ -27,7 +27,7 @@ public class Player extends Actor implements ContactListener{
 	static final float maxSpeed = 150;
 	static final float terminalVelocity = 300;
 	static final float jumpStrength = 300;
-	protected float x,y, width, height;
+	public float x,y, width, height;
 	protected Vector2 velocity, acceleration;
 	private float footHeight = 20.f;
 	protected boolean canJump = false;
@@ -124,6 +124,17 @@ public class Player extends Actor implements ContactListener{
 		if (!walking || !canJump)
 		{
 			animIndex = 0;
+		}
+		
+		if (x > 800*0.8f)
+		{
+			velocity.x = Math.min(velocity.x,  0.f);
+			acceleration.x = Math.min(acceleration.x,  0.f);
+		}
+		if (x < 800*0.2f)
+		{
+			velocity.x = Math.max(velocity.x,  0.f);
+			acceleration.x = Math.max(acceleration.x,  0.f);
 		}
 		
 		velocity.x += acceleration.x;
