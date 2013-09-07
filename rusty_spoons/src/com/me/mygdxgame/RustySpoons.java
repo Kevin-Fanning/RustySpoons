@@ -1,6 +1,8 @@
 package com.me.mygdxgame;
 
 import com.badlogic.gdx.ApplicationListener;
+
+import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -16,51 +18,35 @@ public class RustySpoons implements ApplicationListener {
 	private Texture texture;
 	private Sprite sprite;
 	
+	private Screen currentScreen;
+	
 	@Override
 	public void create() {		
-		float w = Gdx.graphics.getWidth();
-		float h = Gdx.graphics.getHeight();
-		
-		camera = new OrthographicCamera(1, h/w);
-		batch = new SpriteBatch();
-		
-		texture = new Texture(Gdx.files.internal("data/face.png"));
-		texture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
-		
-		TextureRegion region = new TextureRegion(texture, 0, 0, 512, 512);
-		
-		sprite = new Sprite(region);
-		sprite.setSize(0.9f, 0.9f * sprite.getHeight() / sprite.getWidth());
-		sprite.setOrigin(sprite.getWidth()/2, sprite.getHeight()/2);
-		sprite.setPosition(-sprite.getWidth()/2, -sprite.getHeight()/2);
+		currentScreen = new AbstractScreen(this);
 	}
 
 	@Override
 	public void dispose() {
-		batch.dispose();
-		texture.dispose();
+		currentScreen.dispose();
 	}
 
 	@Override
 	public void render() {		
-		Gdx.gl.glClearColor(1, 1, 1, 1);
-		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
-		
-		batch.setProjectionMatrix(camera.combined);
-		batch.begin();
-		sprite.draw(batch);
-		batch.end();
+		currentScreen.render(0.1f);
 	}
 
 	@Override
 	public void resize(int width, int height) {
+		currentScreen.resize(width, height);
 	}
 
 	@Override
 	public void pause() {
+		currentScreen.pause();
 	}
 
 	@Override
 	public void resume() {
+		currentScreen.resume();
 	}
 }

@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.me.mygdxgame.RustySpoons;
+
 
 public class AbstractScreen implements Screen {
 	protected final RustySpoons game;
@@ -19,7 +19,7 @@ public class AbstractScreen implements Screen {
 		this.game = game;
 		this.font = new BitmapFont();
 		this.batch = new SpriteBatch();
-		this.stage = new Stage(0, 0, true);
+		this.stage = new Stage(800, 600, true);
 	}
 	
 	protected String getName()
