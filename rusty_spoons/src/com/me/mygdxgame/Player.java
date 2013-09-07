@@ -109,6 +109,7 @@ public class Player extends Actor implements ContactListener{
 		{
 			velocity.y = jumpStrength;
 			canJump = false;
+			RustySpoons.SND_JUMP.play();
 		}
 		
 		if (walking && TimeUtils.millis() - lastFrameTime > 100)
