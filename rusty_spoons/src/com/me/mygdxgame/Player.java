@@ -18,10 +18,12 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.Manifold;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.utils.TimeUtils;
 
 
-public class Player extends Image implements ContactListener{
+public class Player extends Actor implements ContactListener{
 	static final float maxSpeed = 150;
 	static final float terminalVelocity = 300;
 	static final float jumpStrength = 300;
@@ -33,13 +35,28 @@ public class Player extends Image implements ContactListener{
 	Fixture feet;
 	Fixture torso;
 	
+	Texture[] anim;
+	int animIndex = 0;
+	int direction = 1;
+	boolean walking = false;
+	long lastFrameTime = 0;
+	
 	public Player(World world)
 	{
-		super(new TextureRegion(new Texture("data/face.png")));
+		super();
+		
+		anim = new Texture[4];
+		anim[0] = new Texture("data/char/walk1.png");
+		anim[1] = new Texture("data/char/walk2.png");
+		anim[2] = new Texture("data/char/walk3.png");
+		anim[3] = new Texture("data/char/walk4.png");
+		
+		
+		
 		x = 200;
 		y = 300;
 		width = 64;
-		height = 64;
+		height = 128;
 		
 		world.setContactListener(this);
 		
@@ -52,12 +69,12 @@ public class Player extends Image implements ContactListener{
 		boxDef.position.set((x + 0.5f*width )* RustySpoons.WORLD_TO_BOX, (y + 0.5f*height)*RustySpoons.WORLD_TO_BOX);
 		body = world.createBody(boxDef);
 		PolygonShape polyShape = new PolygonShape();
-		polyShape.setAsBox((width/2)*RustySpoons.WORLD_TO_BOX,  ((height - footHeight)/2)*RustySpoons.WORLD_TO_BOX, new Vector2(0, 22*RustySpoons.WORLD_TO_BOX), 0.f);
+		polyShape.setAsBox((width/2)*RustySpoons.WORLD_TO_BOX,  ((height - footHeight)/2)*RustySpoons.WORLD_TO_BOX, new Vector2(0, 54*RustySpoons.WORLD_TO_BOX), 0.f);
 		torso = body.createFixture(polyShape, 0.f);
 		polyShape.dispose();
 		                                 
 		PolygonShape feetShape = new PolygonShape();
-		feetShape.setAsBox((width*2/6)*RustySpoons.WORLD_TO_BOX,  footHeight / 2 * RustySpoons.WORLD_TO_BOX, new Vector2(0, -10*RustySpoons.WORLD_TO_BOX) , 0.f);
+		feetShape.setAsBox((width/2)*RustySpoons.WORLD_TO_BOX,  footHeight / 2 * RustySpoons.WORLD_TO_BOX, new Vector2(0, -10*RustySpoons.WORLD_TO_BOX) , 0.f);
 		feet = body.createFixture(feetShape, 0.f);
 		feet.setFriction(0.01f);
 		torso.setFriction(0.01f);
@@ -72,21 +89,41 @@ public class Player extends Image implements ContactListener{
 		if (Gdx.input.isKeyPressed(Input.Keys.LEFT))
 		{
 			acceleration.x = -16.f;
+			direction = -1;
+			walking = true;
 		}
 		
 		else if (Gdx.input.isKeyPressed(Input.Keys.RIGHT))
 		{
 			acceleration.x = 16.f;
+			direction = 1;
+			walking = true;
 		}
 		else if (canJump)
 		{
 			acceleration.x = -velocity.x/4;
+			walking = false;
 		}
 
 		if (canJump && Gdx.input.isKeyPressed(Input.Keys.SPACE))
 		{
 			velocity.y = jumpStrength;
 			canJump = false;
+		}
+		
+		if (walking && TimeUtils.millis() - lastFrameTime > 100)
+		{
+			animIndex += 1;
+			if (animIndex >3)
+			{
+				animIndex = 0;
+			}
+			lastFrameTime = TimeUtils.millis();
+		}
+
+		if (!walking || !canJump)
+		{
+			animIndex = 0;
 		}
 		
 		velocity.x += acceleration.x;
@@ -110,8 +147,10 @@ public class Player extends Image implements ContactListener{
 	@Override
 	public void draw(SpriteBatch batch, float parentAlpha)
 	{
-		super.validate();
-		this.getDrawable().draw(batch,  x,  y,  64,  64);
+		if (direction < 0)
+			batch.draw(anim[animIndex], x + width , y, direction * width, height);
+		else
+			batch.draw(anim[animIndex], x , y, direction * width, height);
 	}
 
 	@Override
@@ -131,7 +170,7 @@ public class Player extends Image implements ContactListener{
 
 	@Override
 	public void preSolve(Contact contact, Manifold oldManifold) {
-		// TODO Auto-generated method stub
+		// TODO Auto-generated method stub                                                                                                                                                                                                                                                                                                                
 		
 	}
 

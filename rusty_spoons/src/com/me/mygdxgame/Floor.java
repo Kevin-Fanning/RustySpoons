@@ -8,9 +8,10 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 
-public class Floor extends Image {
+public class Floor extends Actor {
 	private ShapeRenderer shapeRenderer;
 	public float x,y, width, height;
 	public Floor(int x, int y, int width, int height, World world)

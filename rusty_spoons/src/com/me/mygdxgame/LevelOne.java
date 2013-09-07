@@ -36,7 +36,7 @@ public class LevelOne extends AbstractScreen {
 		
 		player = new Player(world);
 		
-		floor = new Floor(100, 100, 200, 30, world);
+		floor = new Floor(100, 100, 2000, 30, world);
 		
 		
 		stage.addActor(player);
