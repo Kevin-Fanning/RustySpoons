@@ -1,12 +1,13 @@
 package com.me.mygdxgame;
 
+import java.io.Console;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.me.mygdxgame.Player;
 
 
 public class AbstractScreen implements Screen {
@@ -16,16 +17,12 @@ public class AbstractScreen implements Screen {
 	protected final SpriteBatch batch;
 	protected final Stage stage;
 	
-	protected Player player;
-	
 	public AbstractScreen(RustySpoons game) {
 		this.game = game;
 		this.font = new BitmapFont();
 		this.batch = new SpriteBatch();
-		this.stage = new Stage(1024, 768, true);
+		this.stage = new Stage(800, 600, true);
 		
-		player = new Player();
-		stage.addActor(player);
 	}
 	
 	protected String getName()
